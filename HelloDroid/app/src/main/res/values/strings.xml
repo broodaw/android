@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HelloDroid</string>
+    <string name="not_clicked_yet">You didn\'t click the button yet.</string>
+</resources>
