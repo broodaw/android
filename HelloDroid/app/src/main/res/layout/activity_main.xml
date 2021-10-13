@@ -9,10 +9,22 @@
     <TextView
             android:text="@string/not_clicked_yet"
             android:layout_width="333dp"
-            android:layout_height="43dp" android:id="@+id/textView" tools:layout_editor_absoluteY="466dp"
-            tools:layout_editor_absoluteX="62dp" android:textSize="24sp" android:textColor="@color/black"/>
+            android:layout_height="43dp" android:id="@+id/textView"
+            android:textSize="24sp" android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="145dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"/>
     <ImageView
             android:layout_width="257dp"
-            android:layout_height="391dp" app:srcCompat="@drawable/record" android:id="@+id/emergencyButton"
-            tools:layout_editor_absoluteY="31dp" tools:layout_editor_absoluteX="77dp"/>
+            android:layout_height="394dp" app:srcCompat="@drawable/record" android:id="@+id/emergencyButton"
+            tools:layout_editor_absoluteY="31dp" android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"/>
+    <TextView
+            android:text="@string/txtLatLon"
+            android:layout_width="379dp"
+            android:layout_height="39dp" android:id="@+id/txtLatLon"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="50dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
