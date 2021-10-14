@@ -27,5 +27,5 @@
             android:layout_height="63dp" android:id="@+id/txtLatLon"
             android:layout_marginEnd="24dp" android:layout_marginRight="24dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="66dp"/>
+            android:layout_marginBottom="66dp" android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

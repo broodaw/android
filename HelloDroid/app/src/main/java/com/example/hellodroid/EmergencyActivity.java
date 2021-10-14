@@ -1,26 +1,35 @@
 package com.example.hellodroid;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmergencyActivity extends AppCompatActivity implements LocationListener {
 
+    private static DecimalFormat df = new DecimalFormat("0.00000");
+
     private TextView message;
     private TextView latLon;
+    private Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +63,41 @@ public class EmergencyActivity extends AppCompatActivity implements LocationList
     }
 
     private void tapped() {
+        sendSMS("004915201945526", "emördschenzie alööörd ... " +
+                "https://maps.google.com/?q=" + currentLocation.getLatitude() + "," +
+                currentLocation.getLongitude());
         message.setText("Your position was sent.");
+    }
+
+    private void sendSMS(String phoneNumber, String message) {
+        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
+                new Intent(this, SmsSentReceiver.class), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
+                new Intent(this, SmsDeliveredReceiver.class), 0);
+        try {
+            SmsManager sms = SmsManager.getDefault();
+            ArrayList<String> mSMSMessage = sms.divideMessage(message);
+            for (int i = 0; i < mSMSMessage.size(); i++) {
+                sentPendingIntents.add(i, sentPI);
+                deliveredPendingIntents.add(i, deliveredPI);
+            }
+            sms.sendMultipartTextMessage(phoneNumber, null, mSMSMessage,
+                    sentPendingIntents, deliveredPendingIntents);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            Toast.makeText(getBaseContext(), "SMS sending failed...",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        latLon.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+        currentLocation = location;
+        latLon.setText("Latitude:" + df.format(location.getLatitude()) + ", Longitude:" + df.format(location.getLongitude()));
     }
 
     @Override
@@ -85,5 +123,10 @@ public class EmergencyActivity extends AppCompatActivity implements LocationList
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Status", String.valueOf(status));
     }
 }
